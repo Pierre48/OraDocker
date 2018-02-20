@@ -14,12 +14,14 @@ namespace OraDevCli
             var result = System.Console.Read();
             return result=='y' || result == 'Y';
         }
-        public static void WriteErrorLine(string message) => WritMessqge(message,ConsoleColor.Red);
-        public static void WriteInfoLine(string message) => WritMessqge(message,ConsoleColor.White);
-        public static void WriteSuccessLine(string message) => WritMessqge(message,ConsoleColor.Green);
-        public static void WriteDebugLine(string message) => WritMessqge(message, ConsoleColor.Gray);
 
-        private static void WritMessqge(string message, ConsoleColor color)
+        internal static void WriteWarningLine(string message) => WriteMessage(message, ConsoleColor.Yellow);
+        public static void WriteErrorLine(string message) => WriteMessage(message,ConsoleColor.Red);
+        public static void WriteInfoLine(string message) => WriteMessage(message,ConsoleColor.White);
+        public static void WriteSuccessLine(string message) => WriteMessage(message,ConsoleColor.Green);
+        public static void WriteDebugLine(string message) => WriteMessage(message, ConsoleColor.Gray);
+
+        private static void WriteMessage(string message, ConsoleColor color)
         {
             var initialColor = System.Console.ForegroundColor;
             try

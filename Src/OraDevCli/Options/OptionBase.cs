@@ -15,15 +15,16 @@ namespace OraDevCli.Options
         public string User { get; set; }
         [Option('n', HelpText = "The database name. Default value is default", Required = false)]
         public string Name { get; set; }
+        public string ContainerKey { get; set; } = "ora11";
 
         private string GetUSer()
         {
             if (string.IsNullOrEmpty(User))
             {
                 string fullName = System.Security.Principal.WindowsIdentity.GetCurrent().Name;
-                return fullName.Split('\\').Last();
+                return fullName.Split('\\').Last().ToLower();
             }
-            return User;
+            return User.ToLower();
         }
 
         private string GetName()
@@ -31,9 +32,9 @@ namespace OraDevCli.Options
 
             if (string.IsNullOrEmpty(Name))
             {
-                return "Default";
+                return "Default".ToLower();
             }
-            return Name;
+            return Name.ToLower();
         }
 
         public virtual void Run()

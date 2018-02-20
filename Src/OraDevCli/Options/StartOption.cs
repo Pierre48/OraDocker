@@ -1,18 +1,16 @@
 ﻿using System;
 using CommandLine;
-using OraDevCli.Options;
 using OraDevCli.Services;
 
 namespace OraDevCli.Options
 {
-    [Verb("remove", HelpText = "Remove an existing database", Hidden = false)]
-    public class RemoveOption : OptionBase
+    [Verb("start", HelpText = "Start an existing database", Hidden = false)]
+    public class StartOption :OptionBase
     {
         public override void Run()
         {
-            Console.WriteInfoLine("Removing a database...");
+            Console.WriteInfoLine("Starting a database...");
             base.Run();
-            if (!Console.Confirm()) return;
 
             using (var client = new DockerService())
             {
@@ -25,12 +23,13 @@ namespace OraDevCli.Options
                 }
                 if (container.State == "running")
                 {
-                    client.StopContainer(container.ID);
+                    Console.WriteErrorLine($"A {ContainerKey} database named {Name} exists for user {User}, but its status is already equal to running");
+                    return;
                 }
-                client.RemoveContainer(container.ID);
-            }
 
-            Console.WriteSuccessLine("The database was successfully removed.");
+                client.StartContainer(container.ID);
+                Console.WriteSuccessLine("The database was successfully started.");
+            }
         }
     }
 }
